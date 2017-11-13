@@ -3,6 +3,8 @@
 action=$1
 shift
 args=$@
+#server=silvius-server.voxhub.io
+server=localhost
 
 function check_microphone {
     if [[ -f .selected-mic ]]; then
@@ -21,9 +23,9 @@ function check_microphone {
 
 function run_recognition {
     if [[ $1 == 1 ]]; then
-        python stream/mic.py -s silvius-server.voxhub.io -d $which $args | python grammar/main.py
+        python stream/mic.py -s $server -d $which $args | python grammar/main.py
     else
-        python stream/mic.py -s silvius-server.voxhub.io -d $which $args
+        python stream/mic.py -s $server -d $which $args
     fi
 }
 

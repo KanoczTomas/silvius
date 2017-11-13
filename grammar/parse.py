@@ -39,7 +39,7 @@ class CoreParser(GenericParser):
             single_command ::= word_phrase
         '''
         return args[0]
-
+    
     def p_movement(self, args):
         '''
             movement ::= up     repeat
@@ -57,7 +57,7 @@ class CoreParser(GenericParser):
     def p_repeat(self, args):
         '''
             repeat ::=
-            repeat ::= number
+            repeat ::= num
         '''
         if len(args) > 0:
             return args[0]
@@ -66,16 +66,16 @@ class CoreParser(GenericParser):
 
     def p_number(self, args):
         '''
-            number ::= zero
-            number ::= one
-            number ::= two
-            number ::= three
-            number ::= four
-            number ::= five
-            number ::= six
-            number ::= seven
-            number ::= eight
-            number ::= nine
+            num ::= zero
+            num ::= one
+            num ::= two
+            num ::= three
+            num ::= four
+            num ::= five
+            num ::= six
+            num ::= seven
+            num ::= eight
+            num ::= nine
         '''
         # doesn't work right now
         #for v in value:
@@ -133,8 +133,12 @@ class CoreParser(GenericParser):
             letter ::= expert
             letter ::= yankee
             letter ::= zulu
+            letter ::= number repeat
         '''
         if(args[0].type == 'expert'): args[0].type = 'x'
+        if(args[0].type == 'number'):
+            return AST('char', str(args[1]))
+            
         return AST('char', [ args[0].type[0] ])
 
     def p_character(self, args):
@@ -166,6 +170,7 @@ class CoreParser(GenericParser):
             character ::= lake
             character ::= square
             character ::= rectangle
+            character ::= sami
         '''
         value = {
             'act'   : 'Escape',
@@ -194,7 +199,9 @@ class CoreParser(GenericParser):
             'break': 'braceright',
             'lake': 'braceleft',
             'square': 'bracketleft',
-            'rectangle': 'bracketright'
+            'rectangle': 'bracketright',
+            'sami': 'semicolon',
+            'something': 'semicolon'
         }
         return AST('raw_char', [ value[args[0].type] ])
 
@@ -213,6 +220,8 @@ class CoreParser(GenericParser):
             ])
         else:
             return AST('raw_char', [ value[args[0].type] ])
+    
+
 
     def p_english(self, args):
         '''
@@ -234,6 +243,7 @@ class CoreParser(GenericParser):
         '''
         return args[1]
 
+        
     def p_word_repeat(self, args):
         '''
             word_repeat ::= ANY
