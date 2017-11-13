@@ -141,8 +141,8 @@ class CoreParser(GenericParser):
         '''
             character ::= act
             character ::= colon
-            character ::= single quote
-            character ::= double quote
+            character ::= single
+            character ::= double
             character ::= equal
             character ::= space
             character ::= tab
