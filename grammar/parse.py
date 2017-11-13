@@ -4,6 +4,7 @@ from spark import GenericParser
 from spark import GenericASTBuilder
 from errors import GrammaticalError
 from ast import AST
+from copy import deepcopy
 
 class CoreParser(GenericParser):
     def __init__(self, start):
@@ -37,6 +38,7 @@ class CoreParser(GenericParser):
             single_command ::= english
             single_command ::= word_sentence
             single_command ::= word_phrase
+            single_command ::= word_camel
         '''
         return args[0]
     
@@ -145,6 +147,7 @@ class CoreParser(GenericParser):
         '''
             character ::= act
             character ::= colon
+            character ::= call on
             character ::= single
             character ::= double
             character ::= equal
@@ -171,10 +174,12 @@ class CoreParser(GenericParser):
             character ::= square
             character ::= rectangle
             character ::= sami
+            character ::= something
         '''
         value = {
             'act'   : 'Escape',
             'colon' : 'colon',
+            'call on' : 'colon',
             'single': 'apostrophe',
             'double': 'quotedbl',
             'equal' : 'equal',
@@ -241,6 +246,29 @@ class CoreParser(GenericParser):
         '''
             word_phrase ::= phrase word_repeat
         '''
+        return args[1]
+    
+    def p_word_camel(self, args):
+        '''
+            word_camel ::= campbell word_repeat
+            word_camel ::= camel word_repeat
+        '''
+        print dir(args[1])
+        if(len(args[1].children) > 0):
+            camelCase = ''
+            first = True #we use it not to capitalise the first character
+            for a in args[1].children:
+                if first:
+                    camelCase += a.meta
+                    first = False
+                else:
+                    camelCase += a.meta.capitalize()
+                    
+            args[1].children[0].meta = camelCase
+            child = deepcopy(args[1].children[0])
+            del args[1].children #we throw away all childes
+            args[1].children = [child] #insert only the 1 generated and having the camelCase meta
+        
         return args[1]
 
         
