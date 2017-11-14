@@ -129,6 +129,7 @@ class CoreParser(GenericParser):
             letter ::= tango
             letter ::= uniform
             letter ::= victor
+            letter ::= victoria
             letter ::= whiskey
             letter ::= whisky
             letter ::= xray
@@ -175,6 +176,7 @@ class CoreParser(GenericParser):
             character ::= rectangle
             character ::= sami
             character ::= something
+            character ::= come
         '''
         value = {
             'act'   : 'Escape',
@@ -189,7 +191,7 @@ class CoreParser(GenericParser):
             'hash'  : 'numbersign',
             'dollar': 'dollar',
             'percent': 'percent',
-            'carrot': 'caret',
+            'carrot': 'asciicircum',
             'ampersand': 'ampersand',
             'star': 'asterisk',
             'late': 'parenleft',
@@ -206,7 +208,8 @@ class CoreParser(GenericParser):
             'square': 'bracketleft',
             'rectangle': 'bracketright',
             'sami': 'semicolon',
-            'something': 'semicolon'
+            'something': 'semicolon',
+            'come': 'comma'
         }
         return AST('raw_char', [ value[args[0].type] ])
 
