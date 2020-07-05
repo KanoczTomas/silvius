@@ -39,7 +39,7 @@ class CoreParser(GenericParser):
             single_command ::= word_sentence
             single_command ::= word_phrase
             single_command ::= word_camel
-        '''
+            '''
         return args[0]
 
     def p_movement(self, args):
@@ -187,6 +187,7 @@ class CoreParser(GenericParser):
             character ::= end
             character ::= and
             character ::= home
+            character ::= control
         '''
         value = {
             'act'   : 'Escape',
@@ -224,7 +225,8 @@ class CoreParser(GenericParser):
             'small': 'less',
             'end': 'End',
             'and': 'End',
-            'home': 'Home'
+            'home': 'Home',
+            'control' : 'ctrl+'
         }
         return AST('raw_char', [ value[args[0].type] ])
 

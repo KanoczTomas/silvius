@@ -15,6 +15,7 @@ keywords = [
     'charlie',
     'colon',
     'come',
+    'control',
     'call on',
     'delta',
     'dollar',
