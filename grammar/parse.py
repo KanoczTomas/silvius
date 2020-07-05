@@ -41,7 +41,7 @@ class CoreParser(GenericParser):
             single_command ::= word_camel
         '''
         return args[0]
-    
+
     def p_movement(self, args):
         '''
             movement ::= up     repeat
@@ -72,7 +72,9 @@ class CoreParser(GenericParser):
             num ::= one
             num ::= two
             num ::= three
+            num ::= free
             num ::= four
+            num ::= for
             num ::= five
             num ::= six
             num ::= seven
@@ -87,7 +89,9 @@ class CoreParser(GenericParser):
             'one'   : 1,
             'two'   : 2,
             'three' : 3,
+            'free' : 3,
             'four'  : 4,
+            'for'  : 4,
             'five'  : 5,
             'six'   : 6,
             'seven' : 7,
@@ -121,6 +125,7 @@ class CoreParser(GenericParser):
             letter ::= line
             letter ::= mike
             letter ::= november
+            letter ::= nov
             letter ::= oscar
             letter ::= papa
             letter ::= queen
@@ -141,7 +146,7 @@ class CoreParser(GenericParser):
         if(args[0].type == 'expert'): args[0].type = 'x'
         if(args[0].type == 'number'):
             return AST('char', str(args[1]))
-            
+
         return AST('char', [ args[0].type[0] ])
 
     def p_character(self, args):
@@ -177,6 +182,11 @@ class CoreParser(GenericParser):
             character ::= sami
             character ::= something
             character ::= come
+            character ::= great
+            character ::= small
+            character ::= end
+            character ::= and
+            character ::= home
         '''
         value = {
             'act'   : 'Escape',
@@ -209,7 +219,12 @@ class CoreParser(GenericParser):
             'rectangle': 'bracketright',
             'sami': 'semicolon',
             'something': 'semicolon',
-            'come': 'comma'
+            'come': 'comma',
+            'great': 'greater',
+            'small': 'less',
+            'end': 'End',
+            'and': 'End',
+            'home': 'Home'
         }
         return AST('raw_char', [ value[args[0].type] ])
 
@@ -228,7 +243,7 @@ class CoreParser(GenericParser):
             ])
         else:
             return AST('raw_char', [ value[args[0].type] ])
-    
+
 
 
     def p_english(self, args):
@@ -250,7 +265,7 @@ class CoreParser(GenericParser):
             word_phrase ::= phrase word_repeat
         '''
         return args[1]
-    
+
     def p_word_camel(self, args):
         '''
             word_camel ::= campbell word_repeat
@@ -266,15 +281,15 @@ class CoreParser(GenericParser):
                     first = False
                 else:
                     camelCase += a.meta.capitalize()
-                    
+
             args[1].children[0].meta = camelCase
             child = deepcopy(args[1].children[0])
             del args[1].children #we throw away all childes
             args[1].children = [child] #insert only the 1 generated and having the camelCase meta
-        
+
         return args[1]
 
-        
+
     def p_word_repeat(self, args):
         '''
             word_repeat ::= ANY
